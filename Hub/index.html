@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora e Calendário com Eventos</title>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <header class="app-header">
+        <button id="menuButton" class="icon-button">
+            <span class="material-symbols-outlined">menu</span>
+        </button>
+        <h1>Dashboard</h1>
+    </header>
+
+    <aside id="sideMenu" class="side-menu">
+        <nav>
+            <a href="#" class="menu-item active">
+                <span class="material-symbols-outlined">home</span>
+                Início
+            </a>
+            <a href="#" class="menu-item">
+                <span class="material-symbols-outlined">event</span>
+                Meus Eventos
+            </a>
+            <a href="#" class="menu-item">
+                <span class="material-symbols-outlined">settings</span>
+                Configurações
+            </a>
+        </nav>
+    </aside>
+
+    <main id="mainContent" class="main-content">
+        <div class="main-container">
+            <div class="calendar-section">
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <button id="prevMonth" class="month-nav-btn">
+                            <span class="material-symbols-outlined">chevron_left</span>
+                        </button>
+                        <h2 id="monthYear"></h2>
+                        <button id="nextMonth" class="month-nav-btn">
+                            <span class="material-symbols-outlined">chevron_right</span>
+                        </button>
+                    </div>
+                    <div class="calendar-body">
+                        <div class="calendar-days-header">
+                            <div>D</div>
+                            <div>S</div>
+                            <div>T</div>
+                            <div>Q</div>
+                            <div>Q</div>
+                            <div>S</div>
+                            <div>S</div>
+                        </div>
+                        <div id="calendarGrid" class="calendar-grid"></div>
+                    </div>
+                </div>
+                <div id="eventList" class="event-list">
+                    <h3>Eventos do Mês</h3>
+                    <ul id="eventsUl"></ul>
+                </div>
+            </div>
+
+            <div class="calculator">
+                <input type="text" id="result" class="calculator-screen" disabled>
+                <div class="calculator-buttons">
+                    <button class="btn" onclick="appendValue('7')">7</button>
+                    <button class="btn" onclick="appendValue('8')">8</button>
+                    <button class="btn" onclick="appendValue('9')">9</button>
+                    <button class="btn" onclick="appendValue('/')">/</button>
+
+                    <button class="btn" onclick="appendValue('4')">4</button>
+                    <button class="btn" onclick="appendValue('5')">5</button>
+                    <button class="btn" onclick="appendValue('6')">6</button>
+                    <button class="btn" onclick="appendValue('*')">*</button>
+
+                    <button class="btn" onclick="appendValue('1')">1</button>
+                    <button class="btn" onclick="appendValue('2')">2</button>
+                    <button class="btn" onclick="appendValue('3')">3</button>
+                    <button class="btn" onclick="appendValue('-')">-</button>
+
+                    <button class="btn" onclick="appendValue('0')">0</button>
+                    <button class="btn" onclick="appendValue('.')">.</button>
+                    <button class="btn" onclick="clearScreen()">C</button>
+                    <button class="btn" onclick="appendValue('+')">+</button>
+
+                    <button class="btn equal-btn" onclick="calculateResult()">=</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="eventModal" class="modal">
+        <div class="modal-content">
+            <span id="closeModal" class="close-button">&times;</span>
+            <h2>Adicionar Evento</h2>
+            <p>Data: <span id="eventDate"></span></p>
+            <input type="text" id="eventTitle" placeholder="Título do evento">
+            <button id="saveEvent">Salvar Evento</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

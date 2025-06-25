@@ -1,0 +1,346 @@
+:root {
+    --primary-color: #4CAF50;
+    --primary-dark-color: #45a049;
+    --light-gray-color: #f4f4f4;
+    --medium-gray-color: #e0e0e0;
+    --dark-gray-color: #333;
+    --text-light-color: #fff;
+    --text-dark-color: #333;
+}
+
+body {
+    font-family: 'Roboto', Arial, sans-serif;
+    margin: 0;
+    background-color: var(--light-gray-color);
+    color: var(--text-dark-color);
+    display: flex;
+}
+
+/* --- Layout Principal --- */
+.app-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background-color: var(--primary-color);
+    color: var(--text-light-color);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 1000;
+}
+
+.app-header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+.icon-button {
+    background: transparent;
+    border: none;
+    color: var(--text-light-color);
+    cursor: pointer;
+    border-radius: 50%;
+    padding: 8px;
+    margin-right: 16px;
+}
+.icon-button:hover {
+    background-color: rgba(255,255,255,0.2);
+}
+
+.side-menu {
+    position: fixed;
+    top: 60px;
+    left: -250px; /* Escondido por padrão */
+    width: 240px;
+    height: calc(100vh - 60px);
+    background-color: #fff;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    padding: 20px 0;
+    transition: left 0.3s ease;
+    z-index: 999;
+}
+.side-menu.open {
+    left: 0;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    color: var(--text-dark-color);
+    text-decoration: none;
+    font-size: 1rem;
+}
+.menu-item:hover {
+    background-color: var(--light-gray-color);
+}
+.menu-item.active {
+    background-color: var(--medium-gray-color);
+    font-weight: 500;
+}
+.menu-item .material-symbols-outlined {
+    margin-right: 20px;
+}
+
+.main-content {
+    margin-top: 60px;
+    margin-left: 0;
+    padding: 20px;
+    width: 100%;
+    transition: margin-left 0.3s ease;
+    /* Correção: Adicionado flex para centralizar o conteúdo */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    box-sizing: border-box;
+}
+.main-content.shifted {
+    margin-left: 240px;
+}
+
+.main-container {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+.calendar-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* --- Componentes --- */
+.calculator {
+    width: 300px;
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+}
+
+.calculator-screen {
+    width: 100%;
+    height: 80px;
+    background-color: #f0f0f0;
+    color: #333;
+    font-size: 32px;
+    text-align: right;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    margin-bottom: 16px;
+}
+
+.calculator-buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.btn {
+    height: 60px;
+    background-color: var(--medium-gray-color);
+    border: none;
+    border-radius: 8px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #d0d0d0;
+}
+
+.equal-btn {
+    grid-column: span 4;
+    background-color: var(--primary-color);
+    color: var(--text-light-color);
+}
+
+.equal-btn:hover {
+    background-color: var(--primary-dark-color);
+}
+
+
+.calendar-container {
+    width: 360px;
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.calendar-header h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.month-nav-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s;
+}
+
+.month-nav-btn:hover {
+    background-color: #f0f0f0;
+}
+
+.calendar-days-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-weight: 500;
+    color: #888;
+    margin-bottom: 8px;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    justify-items: center;
+}
+
+.calendar-day {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.calendar-day:hover {
+    background-color: #f0f0f0;
+}
+
+.calendar-day.other-month {
+    color: #ccc;
+    pointer-events: none;
+}
+
+.calendar-day.today {
+    background-color: #AED581;
+}
+
+.calendar-day.selected {
+    background-color: var(--primary-color);
+    color: var(--text-light-color);
+}
+
+.calendar-day.has-event::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    width: 5px;
+    height: 5px;
+    background-color: var(--primary-dark-color);
+    border-radius: 50%;
+}
+.calendar-day.selected.has-event::after {
+    background-color: var(--text-light-color);
+}
+
+.event-list {
+    background: #fff;
+    padding: 16px;
+    border-radius: 16px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.event-list h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+.event-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+/* --- Modal --- */
+.modal {
+    display: none; /* Oculto por padrão */
+    position: fixed;
+    z-index: 1001;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    border-radius: 16px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.modal-content h2 {
+    margin-top: 0;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+    box-sizing: border-box;
+}
+
+.modal-content button {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.modal-content button:hover {
+    background-color: var(--primary-dark-color);
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
