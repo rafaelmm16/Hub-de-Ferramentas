@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     // --- Variáveis Globais e Estado ---
     let currentDate = new Date();
-    let events = JSON.parse(localStorage.getItem('calendarEvents')) || {}; // Carrega eventos salvos
+    let events = JSON.parse(localStorage.getItem('calendarEvents')) || {};
     let selectedDate = null;
 
     // --- Elementos do DOM ---
@@ -18,6 +18,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const eventDateElement = document.getElementById('eventDate');
     const eventTitleInput = document.getElementById('eventTitle');
     const eventsUl = document.getElementById('eventsUl');
+    const usernameInput = document.getElementById('username');
+
+    // Carrega o nome do usuário salvo
+    usernameInput.value = localStorage.getItem('username') || '';
+    usernameInput.addEventListener('input', (e) => {
+        localStorage.setItem('username', e.target.value);
+    });
 
     // --- Lógica de UI (Menu Lateral) ---
     menuButton.addEventListener('click', () => {
@@ -66,8 +73,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function openEventModal(dateStr) {
         selectedDate = dateStr;
         eventDateElement.textContent = new Date(dateStr + 'T00:00:00').toLocaleDateString('pt-BR');
-        eventTitleInput.value = events[dateStr] || '';
-        eventModal.style.display = 'flex'; // Alterado para flex para centralizar
+        eventTitleInput.value = events[dateStr] ? events[dateStr].title : '';
+        eventModal.style.display = 'flex';
     }
 
     function closeEventModal() {
@@ -76,12 +83,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
     saveEventButton.addEventListener('click', () => {
         const eventTitle = eventTitleInput.value.trim();
+        const user = usernameInput.value.trim();
+
+        if (!user) {
+            alert('Por favor, insira seu nome de usuário.');
+            return;
+        }
+
         if (eventTitle) {
-            events[selectedDate] = eventTitle;
+            events[selectedDate] = { title: eventTitle, user: user };
         } else {
             delete events[selectedDate];
         }
-        localStorage.setItem('calendarEvents', JSON.stringify(events)); // Salva no localStorage
+        localStorage.setItem('calendarEvents', JSON.stringify(events));
         closeEventModal();
         renderCalendar();
     });
@@ -95,7 +109,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const eventDate = new Date(dateStr + 'T00:00:00');
             if (eventDate.getFullYear() === year && eventDate.getMonth() === month) {
                 const li = document.createElement('li');
-                li.textContent = `${eventDate.toLocaleDateString('pt-BR')}: ${events[dateStr]}`;
+                const event = events[dateStr];
+                li.textContent = `${eventDate.toLocaleDateString('pt-BR')}: ${event.title} (Adicionado por: ${event.user})`;
                 eventsUl.appendChild(li);
             }
         }
@@ -122,10 +137,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    renderCalendar(); // Renderização inicial
+    renderCalendar();
 });
 
-// --- Lógica da Calculadora (sem alterações) ---
+// --- Lógica da Calculadora ---
 let resultScreen = document.getElementById('result');
 function appendValue(value) { resultScreen.value += value; }
 function clearScreen() { resultScreen.value = ''; }

@@ -36,7 +36,25 @@ body {
     margin: 0;
     font-size: 1.5rem;
     font-weight: 500;
+    flex-grow: 1; /* Permite que o H1 ocupe o espaço */
 }
+
+.user-profile {
+    margin-left: auto; /* Empurra para a direita */
+}
+
+.user-profile input {
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: 1px solid #fff;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    font-size: 0.9rem;
+}
+.user-profile input::placeholder {
+    color: rgba(255,255,255,0.8);
+}
+
 
 .icon-button {
     background: transparent;
@@ -92,7 +110,6 @@ body {
     padding: 20px;
     width: 100%;
     transition: margin-left 0.3s ease;
-    /* Correção: Adicionado flex para centralizar o conteúdo */
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -286,7 +303,7 @@ body {
 
 /* --- Modal --- */
 .modal {
-    display: none; /* Oculto por padrão */
+    display: none; 
     position: fixed;
     z-index: 1001;
     left: 0;
@@ -295,7 +312,6 @@ body {
     height: 100%;
     overflow: auto;
     background-color: rgba(0,0,0,0.4);
-    display: none;
     align-items: center;
     justify-content: center;
 }
