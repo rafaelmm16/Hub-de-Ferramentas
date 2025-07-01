@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     // --- Variáveis Globais e Estado ---
     let currentDate = new Date();
-    let events = {}; // Objeto para armazenar eventos: { "YYYY-MM-DD": "Título do Evento" }
+    let events = JSON.parse(localStorage.getItem('calendarEvents')) || {}; // Carrega eventos salvos
     let selectedDate = null;
 
     // --- Elementos do DOM ---
@@ -46,7 +46,6 @@ document.addEventListener('DOMContentLoaded', function() {
             dayElement.textContent = day;
             const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
             
-            // Marca o dia atual, eventos e seleção
             if (day === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear()) {
                 dayElement.classList.add('today');
             }
@@ -68,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
         selectedDate = dateStr;
         eventDateElement.textContent = new Date(dateStr + 'T00:00:00').toLocaleDateString('pt-BR');
         eventTitleInput.value = events[dateStr] || '';
-        eventModal.style.display = 'block';
+        eventModal.style.display = 'flex'; // Alterado para flex para centralizar
     }
 
     function closeEventModal() {
@@ -82,6 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             delete events[selectedDate];
         }
+        localStorage.setItem('calendarEvents', JSON.stringify(events)); // Salva no localStorage
         closeEventModal();
         renderCalendar();
     });
