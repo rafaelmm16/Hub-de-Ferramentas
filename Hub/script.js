@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentDate = new Date();
     let events = JSON.parse(localStorage.getItem('calendarEvents')) || {};
     let selectedDate = null;
+    let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
 
     // --- Elementos do DOM ---
     const menuButton = document.getElementById('menuButton');
@@ -12,22 +13,78 @@ document.addEventListener('DOMContentLoaded', function() {
     const calendarGrid = document.getElementById('calendarGrid');
     const prevMonthButton = document.getElementById('prevMonth');
     const nextMonthButton = document.getElementById('nextMonth');
+    const eventsUl = document.getElementById('eventsUl');
+
+    // --- Elementos do Modal de Evento ---
     const eventModal = document.getElementById('eventModal');
     const closeModal = document.getElementById('closeModal');
     const saveEventButton = document.getElementById('saveEvent');
     const deleteEventButton = document.getElementById('deleteEvent');
     const eventDateElement = document.getElementById('eventDate');
     const eventTitleInput = document.getElementById('eventTitle');
-    const eventsUl = document.getElementById('eventsUl');
-    const usernameInput = document.getElementById('username');
 
-    // Carrega o nome do usuário salvo
-    usernameInput.value = localStorage.getItem('username') || '';
-    usernameInput.addEventListener('input', (e) => {
-        localStorage.setItem('username', e.target.value);
+    // --- Elementos de Login ---
+    const welcomeMessage = document.getElementById('welcomeMessage');
+    const loginLogoutButton = document.getElementById('loginLogoutButton');
+    const loginModal = document.getElementById('loginModal');
+    const closeLoginModal = document.getElementById('closeLoginModal');
+    const usernameInput = document.getElementById('usernameInput');
+    const passwordInput = document.getElementById('passwordInput');
+    const loginSubmit = document.getElementById('loginSubmit');
+
+
+    // --- Lógica de UI (Menu e Login) ---
+    function updateLoginUI() {
+        if (currentUser) {
+            welcomeMessage.textContent = `Bem-vindo(a), ${currentUser.name}!`;
+            loginLogoutButton.textContent = 'Logout';
+        } else {
+            welcomeMessage.textContent = 'Você não está logado.';
+            loginLogoutButton.textContent = 'Login';
+        }
+        renderCalendar(); // Re-renderiza o calendário para atualizar permissões visuais
+    }
+
+    loginLogoutButton.addEventListener('click', () => {
+        if (currentUser) { // Processo de Logout
+            if (confirm('Tem certeza que deseja sair?')) {
+                localStorage.removeItem('currentUser');
+                currentUser = null;
+                updateLoginUI();
+            }
+        } else { // Abre o modal de login
+            loginModal.classList.add('show');
+        }
+    });
+    
+    closeLoginModal.addEventListener('click', () => loginModal.classList.remove('show'));
+    
+    loginSubmit.addEventListener('click', () => {
+        const username = usernameInput.value.trim();
+        const password = passwordInput.value;
+
+        if (!username) {
+            alert('Por favor, insira um nome de usuário.');
+            return;
+        }
+
+        // Sistema de autenticação simples
+        if (username.toLowerCase() === 'admin' && password === 'admin') {
+            currentUser = { name: 'admin', role: 'admin' };
+        } else if (username.toLowerCase() === 'admin' && password !== 'admin') {
+            alert('Senha incorreta para o administrador.');
+            return;
+        } else {
+            currentUser = { name: username, role: 'user' };
+        }
+
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        updateLoginUI();
+        loginModal.classList.remove('show');
+        usernameInput.value = '';
+        passwordInput.value = '';
     });
 
-    // --- Lógica de UI (Menu Lateral) ---
     menuButton.addEventListener('click', () => {
         sideMenu.classList.toggle('open');
         mainContent.classList.toggle('shifted');
@@ -61,9 +118,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 dayElement.classList.add('has-event');
             }
 
-            dayElement.addEventListener('click', () => { //
+            dayElement.addEventListener('click', () => {
+                if (!currentUser) {
+                    alert('Você precisa estar logado para adicionar ou editar eventos.');
+                    return;
+                }
                 selectedDate = dateStr;
-                openEventModal(dateStr); // Chama a função que abre o modal
+                openEventModal(dateStr);
             });
             calendarGrid.appendChild(dayElement);
         }
@@ -74,35 +135,46 @@ document.addEventListener('DOMContentLoaded', function() {
     function openEventModal(dateStr) {
         selectedDate = dateStr;
         eventDateElement.textContent = new Date(dateStr + 'T00:00:00').toLocaleDateString('pt-BR');
-        
-        if (events[dateStr]) {
-            eventTitleInput.value = events[dateStr].title;
-            deleteEventButton.style.display = 'block';
+        const event = events[dateStr];
+
+        if (event) {
+            eventTitleInput.value = event.title;
+            // Mostra o botão de excluir se for admin ou o dono do evento
+            if (currentUser.role === 'admin' || currentUser.name === event.user) {
+                deleteEventButton.style.display = 'block';
+            } else {
+                deleteEventButton.style.display = 'none';
+            }
         } else {
             eventTitleInput.value = '';
             deleteEventButton.style.display = 'none';
         }
-        eventModal.style.display = 'flex';
+        eventModal.classList.add('show');
     }
 
     function closeEventModal() {
-        eventModal.style.display = 'none';
+        eventModal.classList.remove('show');
     }
 
     saveEventButton.addEventListener('click', () => {
         const eventTitle = eventTitleInput.value.trim();
-        const user = usernameInput.value.trim();
-
-        if (!user) {
-            alert('Por favor, insira seu nome de usuário.');
+        
+        if (!currentUser) {
+            alert('Erro: nenhum usuário logado.');
             return;
         }
-
+        
         if (eventTitle) {
-            events[selectedDate] = { title: eventTitle, user: user };
+            // Salva ou atualiza o evento com o nome do usuário
+            events[selectedDate] = { title: eventTitle, user: currentUser.name };
         } else if (events[selectedDate]) {
-            // Se o título estiver vazio, mas o evento existir, considere excluir
-            delete events[selectedDate];
+            // Se o título for apagado, considera exclusão (se tiver permissão)
+            const event = events[selectedDate];
+             if (currentUser.role === 'admin' || currentUser.name === event.user) {
+                delete events[selectedDate];
+             } else {
+                alert('Você não tem permissão para apagar este evento.');
+             }
         }
         
         localStorage.setItem('calendarEvents', JSON.stringify(events));
@@ -111,9 +183,16 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     deleteEventButton.addEventListener('click', () => {
-        if (!selectedDate || !events[selectedDate]) return;
+        const event = events[selectedDate];
+        if (!selectedDate || !event) return;
 
-        if (confirm(`Tem certeza que deseja excluir este evento?`)) {
+        // Confirmação dupla de permissão
+        if (currentUser.role !== 'admin' && currentUser.name !== event.user) {
+            alert('Você não tem permissão para excluir este evento.');
+            return;
+        }
+
+        if (confirm(`Tem certeza que deseja excluir o evento: "${event.title}"?`)) {
             delete events[selectedDate];
             localStorage.setItem('calendarEvents', JSON.stringify(events));
             closeEventModal();
@@ -146,19 +225,22 @@ document.addEventListener('DOMContentLoaded', function() {
             const eventText = document.createElement('span');
             eventText.textContent = `${new Date(dateStr + 'T00:00:00').getDate()}: ${event.title} (por: ${event.user})`;
             
-            const deleteBtn = document.createElement('button');
-            deleteBtn.classList.add('delete-event-btn');
-            deleteBtn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 18px;">delete</span>';
-            deleteBtn.onclick = () => {
-                if (confirm(`Tem certeza que deseja excluir o evento: "${event.title}"?`)) {
-                    delete events[dateStr];
-                    localStorage.setItem('calendarEvents', JSON.stringify(events));
-                    renderCalendar();
-                }
-            };
-
             li.appendChild(eventText);
-            li.appendChild(deleteBtn);
+
+            // Adiciona botão de excluir apenas se tiver permissão
+            if (currentUser && (currentUser.role === 'admin' || currentUser.name === event.user)) {
+                const deleteBtn = document.createElement('button');
+                deleteBtn.classList.add('delete-event-btn');
+                deleteBtn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 18px;">delete</span>';
+                deleteBtn.onclick = () => {
+                    if (confirm(`Tem certeza que deseja excluir o evento: "${event.title}"?`)) {
+                        delete events[dateStr];
+                        localStorage.setItem('calendarEvents', JSON.stringify(events));
+                        renderCalendar();
+                    }
+                };
+                li.appendChild(deleteBtn);
+            }
             eventsUl.appendChild(li);
         });
     }
@@ -176,12 +258,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
     closeModal.addEventListener('click', closeEventModal);
     window.addEventListener('click', (event) => {
-        if (event.target == eventModal) {
+        if (event.target == eventModal || event.target == loginModal) {
             closeEventModal();
+            loginModal.classList.remove('show');
         }
     });
 
-    renderCalendar();
+    // Inicialização da aplicação
+    updateLoginUI();
 });
 
 // --- Lógica da Calculadora (permanece a mesma) ---

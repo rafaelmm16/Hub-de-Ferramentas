@@ -27,34 +27,52 @@ body {
     color: var(--text-light-color);
     display: flex;
     align-items: center;
+    justify-content: space-between; /* Alterado */
     padding: 0 20px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     z-index: 1000;
+    box-sizing: border-box;
+}
+
+.header-start, .header-end {
+    flex: 1;
+}
+.header-center {
+    flex: 2;
+    text-align: center;
+}
+.header-end {
+    display: flex;
+    justify-content: flex-end;
 }
 
 .app-header h1 {
     margin: 0;
     font-size: 1.5rem;
     font-weight: 500;
-    flex-grow: 1; /* Permite que o H1 ocupe o espaço */
 }
 
 .user-profile {
-    margin-left: auto; /* Empurra para a direita */
-    margin-right: 20px; /* Adiciona um espaço à direita */
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
-.user-profile input {
-    padding: 10px 15px; /* Aumenta o padding para um campo maior */
+.user-profile span {
+    font-weight: 500;
+}
+
+.btn-login {
+    padding: 8px 16px;
     border-radius: 20px;
     border: 1px solid #fff;
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: transparent;
     color: #fff;
-    font-size: 1rem; /* Aumenta o tamanho da fonte */
-    width: 200px; /* Define uma largura para o campo */
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
-.user-profile input::placeholder {
-    color: rgba(255,255,255,0.8);
+.btn-login:hover {
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 
@@ -65,7 +83,6 @@ body {
     cursor: pointer;
     border-radius: 50%;
     padding: 8px;
-    margin-right: 16px;
 }
 .icon-button:hover {
     background-color: rgba(255,255,255,0.2);
@@ -337,9 +354,17 @@ body {
 
 .modal-content input {
     width: 100%;
-    padding: 8px;
-    margin: 10px 0;
+    padding: 10px;
+    margin: 8px 0;
     box-sizing: border-box;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+.login-info {
+    font-size: 0.8rem;
+    color: #666;
+    text-align: center;
+    margin-top: 0;
 }
 
 .modal-content button {
@@ -350,6 +375,7 @@ body {
     border: none;
     border-radius: 8px;
     cursor: pointer;
+    margin-top: 10px;
 }
 .modal-content button:hover {
     background-color: var(--primary-dark-color);
@@ -400,9 +426,14 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 5px 0;
+    padding: 8px 5px;
     border-bottom: 1px solid #eee;
+    font-size: 0.9rem;
 }
+.event-item:last-child {
+    border-bottom: none;
+}
+
 
 .delete-event-btn {
     background: transparent;

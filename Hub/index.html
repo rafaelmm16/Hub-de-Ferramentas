@@ -13,12 +13,19 @@
 <body>
 
     <header class="app-header">
-        <button id="menuButton" class="icon-button">
-            <span class="material-symbols-outlined">menu</span>
-        </button>
-        <h1>Dashboard</h1>
-        <div class="user-profile">
-            <input type="text" id="username" placeholder="Seu nome">
+        <div class="header-start">
+            <button id="menuButton" class="icon-button">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+        </div>
+        <div class="header-center">
+            <h1>Dashboard</h1>
+        </div>
+        <div class="header-end">
+            <div class="user-profile">
+                <span id="welcomeMessage"></span>
+                <button id="loginLogoutButton" class="btn-login">Login</button>
+            </div>
         </div>
     </header>
 
@@ -99,19 +106,30 @@
             </div>
         </div>
     </main>
-
-    <div id="eventModal" class="modal">
-    <div class="modal-content">
-        <span id="closeModal" class="close-button">&times;</span>
-        <h2>Adicionar/Editar Evento</h2>
-        <p>Data: <span id="eventDate"></span></p>
-        <input type="text" id="eventTitle" placeholder="Título do evento">
-        <div class="modal-buttons">
-            <button id="saveEvent">Salvar</button>
-            <button id="deleteEvent" style="display: none;">Excluir Evento</button>
+    
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span id="closeLoginModal" class="close-button">&times;</span>
+            <h2>Login</h2>
+            <input type="text" id="usernameInput" placeholder="Nome de usuário">
+            <input type="password" id="passwordInput" placeholder="Senha (opcional)">
+             <p class="login-info">Para ser admin, use usuário 'admin' e senha 'admin'. Qualquer outro nome de usuário não requer senha.</p>
+            <button id="loginSubmit">Entrar</button>
         </div>
     </div>
-</div>
+
+    <div id="eventModal" class="modal">
+        <div class="modal-content">
+            <span id="closeModal" class="close-button">&times;</span>
+            <h2>Adicionar/Editar Evento</h2>
+            <p>Data: <span id="eventDate"></span></p>
+            <input type="text" id="eventTitle" placeholder="Título do evento">
+            <div class="modal-buttons">
+                <button id="saveEvent">Salvar</button>
+                <button id="deleteEvent" style="display: none;">Excluir Evento</button>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
