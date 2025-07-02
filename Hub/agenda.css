@@ -1,0 +1,101 @@
+.agenda-container {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto; /* Permite rolagem horizontal em telas pequenas */
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 16px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+
+.tabela_agenda {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+    /* white-space: nowrap; REMOVIDO para permitir quebra de linha */
+}
+
+.tabela_agenda th,
+.tabela_agenda td {
+    border: 1px solid #e0e0e0;
+    padding: 8px 4px; /* Padding ajustado */
+    text-align: center;
+    vertical-align: middle;
+    word-wrap: break-word; /* Permite que palavras longas quebrem */
+    white-space: normal; /* Permite que o texto quebre em várias linhas */
+}
+
+.tabela_agenda thead th {
+    background-color: var(--primary-color);
+    color: var(--text-light-color);
+    font-weight: 500;
+    position: sticky; /* Cabeçalho fixo no topo ao rolar */
+    top: 0;
+    z-index: 10;
+}
+
+/* Coluna de nome da sala */
+.tabela_agenda .sala {
+    background-color: #f4f4f4;
+    font-weight: 500;
+    text-align: left;
+    padding-left: 15px;
+    min-width: 150px; /* Largura mínima para a coluna de salas */
+    position: sticky; /* Coluna fixa na esquerda ao rolar */
+    left: 0;
+    z-index: 5;
+}
+
+
+/* Colunas de período/horário */
+.tabela_agenda .periodo {
+    min-width: 85px; /* Largura mínima para os horários */
+}
+
+.tabela_agenda .small {
+    font-size: 0.7rem;
+    font-weight: 400;
+    display: block;
+}
+
+.cartao {
+    cursor: pointer;
+    transition: background-color 0.3s;
+    min-height: 50px;
+    box-sizing: border-box;
+}
+
+.cartao-livre:hover {
+    background-color: #e8f5e9; /* Verde bem claro */
+}
+
+.cartao-aula {
+    color: white;
+    font-weight: bold;
+    cursor: not-allowed;
+}
+
+.cartao-agendado {
+    background-color: #ffcdd2; /* Vermelho claro */
+    color: #c62828; /* Vermelho escuro */
+    font-weight: bold;
+}
+
+.cartao-agendado.meu-agendamento {
+    background-color: #ffe0b2; /* Laranja claro */
+    color: #e65100; /* Laranja escuro */
+}
+
+.cartao-agendado:hover,
+.cartao-agendado.meu-agendamento:hover {
+    filter: brightness(95%);
+}
+
+.cartao a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    height: 100%;
+    width: 100%;
+}

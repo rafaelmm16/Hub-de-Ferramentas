@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda de Salas</title>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="agenda.css"> </head>
+<body>
+    <header class="app-header">
+         <a href="index.html" class="icon-button" style="text-decoration: none; color: white;">
+            <span class="material-symbols-outlined">arrow_back</span>
+        </a>
+        <h1>Agenda de Salas</h1>
+    </header>
+    <main class="main-content" style="padding-top: 80px; align-items: flex-start;">
+        <div class="agenda-container">
+            <table class="table table-hover tabela_agenda table-fixed" id="items_agenda_sala">
+                <thead class="h6">
+                    <tr>
+                        <th class="text-center" colspan="18" style="width: 50px;">Quarta Feira - 02/07/2025</th>
+                    </tr>
+                    <tr>
+                        <th class="periodo"></th>
+                        <th class="periodo text-center">1M<br><div class="small">7:10-8:00</div></th>
+                        <th class="periodo text-center">2M<br><div class="small">8:00-8:50</div></th>
+                        <th class="periodo text-center">3M<br><div class="small">8:50-9:40</div></th>
+                        <th class="periodo text-center">4M<br><div class="small">10:00-10:50</div></th>
+                        <th class="periodo text-center">5M<br><div class="small">10:50-11:40</div></th>
+                        <th class="periodo text-center">6M<br><div class="small">11:40-12:30</div></th>
+                        <th class="periodo text-center">1V<br><div class="small">12:50-13:40</div></th>
+                        <th class="periodo text-center">2V<br><div class="small">13:40-14:30</div></th>
+                        <th class="periodo text-center">3V<br><div class="small">14:30-15:20</div></th>
+                        <th class="periodo text-center">4V<br><div class="small">15:40-16:30</div></th>
+                        <th class="periodo text-center">5V<br><div class="small">16:30-17:20</div></th>
+                        <th class="periodo text-center">6V<br><div class="small">17:20-18:10</div></th>
+                        <th class="periodo text-center">1N<br><div class="small">18:40-19:30</div></th>
+                        <th class="periodo text-center">2N<br><div class="small">19:30-20:20</div></th>
+                        <th class="periodo text-center">3N<br><div class="small">20:40-21:30</div></th>
+                        <th class="periodo text-center">4N<br><div class="small">21:30-22:20</div></th>
+                        <th class="periodo text-center">5N<br><div class="small">21:45-22:30</div></th>
+                    </tr>
+                </thead>
+                <tbody class="tabela-corpo h6">
+                    </tbody>
+            </table>
+        </div>
+    </main>
+
+    <div id="agendaModal" class="modal">
+        <div class="modal-content">
+            <span id="closeAgendaModal" class="close-button">&times;</span>
+            <h2>Agendar Sala</h2>
+            <p><strong>Sala:</strong> <span id="modalSala"></span></p>
+            <p><strong>Horário:</strong> <span id="modalHorario"></span></p>
+            <input type="text" id="agendaMotivo" placeholder="Motivo do agendamento">
+            <div class="modal-buttons">
+                <button id="saveAgenda">Salvar</button>
+                <button id="deleteAgenda" style="display: none; background-color: #f44336;">Excluir</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="agenda.js"></script>
+</body>
+</html>
