@@ -88,10 +88,14 @@ body {
     background-color: rgba(255,255,255,0.2);
 }
 
+#menuButton {
+    display: none; /* Esconde o botão do menu */
+}
+
 .side-menu {
     position: fixed;
     top: 60px;
-    left: -250px; /* Escondido por padrão */
+    left: 0; /* Menu sempre visível */
     width: 240px;
     height: calc(100vh - 60px);
     background-color: #fff;
@@ -99,9 +103,6 @@ body {
     padding: 20px 0;
     transition: left 0.3s ease;
     z-index: 999;
-}
-.side-menu.open {
-    left: 0;
 }
 
 .menu-item {
@@ -125,25 +126,21 @@ body {
 
 .main-content {
     margin-top: 60px;
-    margin-left: 0;
+    margin-left: 240px; /* Ajusta a margem para o menu lateral */
     padding: 20px;
-    width: 100%; /* Garante que o conteúdo principal use todo o espaço */
-    transition: margin-left 0.3s ease;
+    width: calc(100% - 240px); /* Ajusta a largura */
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    box-sizing: border-box; /* Adicionado para consistência */
-}
-.main-content.shifted {
-    margin-left: 240px;
+    box-sizing: border-box;
 }
 
 .main-container {
     display: flex;
     gap: 40px;
     align-items: flex-start;
-    width: 100%; /* Permite que o container se expanda */
-    justify-content: center; /* Centraliza o conteúdo se houver espaço */
+    width: 100%;
+    justify-content: center;
 }
 
 .calendar-section {
@@ -159,7 +156,7 @@ body {
     border-radius: 16px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     padding: 16px;
-    flex-shrink: 0; /* Impede que a calculadora encolha */
+    flex-shrink: 0;
 }
 
 .calculator-screen {
@@ -460,12 +457,13 @@ body {
         align-items: center;
     }
 
-    .main-content.shifted {
-        margin-left: 0; /* Remove a margem quando o menu está aberto em telas pequenas */
+    .main-content {
+        margin-left: 0; /* Remove a margem em telas pequenas */
+        width: 100%;
     }
 
     .side-menu {
         width: 220px;
-        left: -230px;
+        /* O menu permanecerá visível, mas você pode querer ajustar a largura */
     }
 }

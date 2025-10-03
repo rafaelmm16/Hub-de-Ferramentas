@@ -6,8 +6,6 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
 
     // --- Elementos do DOM ---
-    const menuButton = document.getElementById('menuButton');
-    const sideMenu = document.getElementById('sideMenu');
     const mainContent = document.getElementById('mainContent');
     const monthYearElement = document.getElementById('monthYear');
     const calendarGrid = document.getElementById('calendarGrid');
@@ -33,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginSubmit = document.getElementById('loginSubmit');
 
 
-    // --- Lógica de UI (Menu e Login) ---
+    // --- Lógica de UI (Login) ---
     function updateLoginUI() {
         if (currentUser) {
             welcomeMessage.textContent = `Bem-vindo(a), ${currentUser.name}!`;
@@ -56,9 +54,9 @@ document.addEventListener('DOMContentLoaded', function() {
             loginModal.classList.add('show');
         }
     });
-    
+
     closeLoginModal.addEventListener('click', () => loginModal.classList.remove('show'));
-    
+
     loginSubmit.addEventListener('click', () => {
         const username = usernameInput.value.trim();
         const password = passwordInput.value;
@@ -85,17 +83,12 @@ document.addEventListener('DOMContentLoaded', function() {
         passwordInput.value = '';
     });
 
-    menuButton.addEventListener('click', () => {
-        sideMenu.classList.toggle('open');
-        mainContent.classList.toggle('shifted');
-    });
-
     // --- Lógica do Calendário ---
     function renderCalendar() {
         calendarGrid.innerHTML = '';
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth();
-        
+
         monthYearElement.textContent = `${new Intl.DateTimeFormat('pt-BR', { month: 'long' }).format(currentDate)} ${year}`;
 
         const firstDayOfMonth = new Date(year, month, 1).getDay();
@@ -110,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function() {
             dayElement.classList.add('calendar-day');
             dayElement.textContent = day;
             const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-            
+
             if (day === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear()) {
                 dayElement.classList.add('today');
             }
@@ -130,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         renderEventList();
     }
-    
+
     // --- Lógica de Eventos ---
     function openEventModal(dateStr) {
         selectedDate = dateStr;
@@ -158,25 +151,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
     saveEventButton.addEventListener('click', () => {
         const eventTitle = eventTitleInput.value.trim();
-        
+
         if (!currentUser) {
             alert('Erro: nenhum usuário logado.');
             return;
         }
-        
+
         if (eventTitle) {
             // Salva ou atualiza o evento com o nome do usuário
             events[selectedDate] = { title: eventTitle, user: currentUser.name };
         } else if (events[selectedDate]) {
             // Se o título for apagado, considera exclusão (se tiver permissão)
             const event = events[selectedDate];
-             if (currentUser.role === 'admin' || currentUser.name === event.user) {
+            if (currentUser.role === 'admin' || currentUser.name === event.user) {
                 delete events[selectedDate];
-             } else {
+            } else {
                 alert('Você não tem permissão para apagar este evento.');
-             }
+            }
         }
-        
+
         localStorage.setItem('calendarEvents', JSON.stringify(events));
         closeEventModal();
         renderCalendar();
@@ -221,10 +214,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const li = document.createElement('li');
             li.classList.add('event-item');
             const event = events[dateStr];
-            
+
             const eventText = document.createElement('span');
             eventText.textContent = `${new Date(dateStr + 'T00:00:00').getDate()}: ${event.title} (por: ${event.user})`;
-            
+
             li.appendChild(eventText);
 
             // Adiciona botão de excluir apenas se tiver permissão
@@ -255,7 +248,7 @@ document.addEventListener('DOMContentLoaded', function() {
         currentDate.setMonth(currentDate.getMonth() + 1);
         renderCalendar();
     });
-    
+
     closeModal.addEventListener('click', closeEventModal);
     window.addEventListener('click', (event) => {
         if (event.target == eventModal || event.target == loginModal) {
