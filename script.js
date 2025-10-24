@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', function() {
     let selectedDate = null;
     let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
 
+    const menuButton = document.getElementById('menuButton');
+    const sideMenu = document.getElementById('sideMenu');
+
     // --- Elementos do DOM ---
     const mainContent = document.getElementById('mainContent');
     const monthYearElement = document.getElementById('monthYear');
@@ -30,6 +33,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const passwordInput = document.getElementById('passwordInput');
     const loginSubmit = document.getElementById('loginSubmit');
 
+    // Verifica se os elementos existem (só existem na index.html)
+    if (menuButton && sideMenu) {
+        // 1. Clicar no botão de menu (hambúrguer)
+        menuButton.addEventListener('click', (e) => {
+            e.stopPropagation(); // Impede que o clique feche o menu imediatamente
+            sideMenu.classList.toggle('open');
+        });
+
+        // 2. Clicar no conteúdo principal (para fechar)
+        mainContent.addEventListener('click', () => {
+            if (sideMenu.classList.contains('open')) {
+                sideMenu.classList.remove('open');
+            }
+        });
+    }
 
     // --- Lógica de UI (Login) ---
     function updateLoginUI() {

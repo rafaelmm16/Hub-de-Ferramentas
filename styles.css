@@ -450,6 +450,10 @@ body {
     background-color: #fdecea;
 }
 
+.side-menu.open {
+    left: 0; /* Esta classe (controlada via JS) mostrará o menu */
+}
+
 /* --- Media Queries para responsividade geral --- */
 @media (max-width: 768px) {
     .main-container {
@@ -461,9 +465,27 @@ body {
         margin-left: 0; /* Remove a margem em telas pequenas */
         width: 100%;
     }
+    
+    #menuButton {
+        display: block;
+    }
 
     .side-menu {
-        width: 220px;
-        /* O menu permanecerá visível, mas você pode querer ajustar a largura */
+        /* 2. ESCONDE o menu para fora da tela por padrão */
+        left: -240px;
+        width: 240px;
+        /* Adiciona uma sombra para parecer que está "acima" */
+        box-shadow: 4px 0 10px rgba(0,0,0,0.2);
+    }
+    
+    /* 4. Ajusta os componentes para telas pequenas */
+    .calendar-container, .calculator {
+        width: 100%;
+        max-width: 360px;
+        box-sizing: border-box;
+    }
+
+    .calculator {
+        max-width: 300px;
     }
 }

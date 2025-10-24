@@ -99,3 +99,24 @@
     height: 100%;
     width: 100%;
 }
+
+@media (max-width: 768px) {
+    .tabela_agenda th,
+    .tabela_agenda td {
+        padding: 6px 3px; /* Reduz o padding para economizar espaço */
+        font-size: 0.75rem; /* Reduz a fonte dos cartões e cabeçalhos */
+    }
+
+    .tabela_agenda .sala {
+        padding-left: 8px; /* Ajusta o padding da sala */
+        min-width: 100px; /* Define uma largura mínima para a coluna de sala */
+    }
+
+    .tabela_agenda .periodo {
+        min-width: 50px; /* Define uma largura mínima para os períodos */
+    }
+    
+    .tabela_agenda .small {
+        font-size: 0.7rem; /* Reduz a fonte dos horários */
+    }
+}
